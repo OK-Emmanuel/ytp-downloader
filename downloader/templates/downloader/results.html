@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Download Results</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'styles/styles.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Download Results</h1>
+        <div class="results">
+            <ul>
+                {% for video in videos %}
+                    <li>
+                        <h2>{{ video.title }}</h2>
+                        <a href="{{ video.url }}">Watch Video</a>
+                        <br>
+                        <img src="{{ video.thumbnail }}" alt="{{ video.title }}">
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <a href="{% url 'download_playlist' %}">Back</a>
+    </div>
+</body>
+</html>

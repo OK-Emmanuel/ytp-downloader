@@ -1,0 +1,32 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>YouTube Playlist Downloader</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'styles/styles.css' %}">
+    <script>
+        function updateProgress() {
+            fetch('/progress/')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('progress').innerText = 'Download Progress: ' + data.progress + '%';
+                });
+        }
+
+        function startPolling() {
+            setInterval(updateProgress, 1000);  // Poll every 1 second
+        }
+    </script>
+</head>
+<body onload="startPolling()">
+    <div class="container">
+        <h1>YouTube Playlist Downloader</h1>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value="Download">
+        </form>
+        <p id="progress">Download Progress: 0%</p>
+    </div>
+</body>
+</html>
