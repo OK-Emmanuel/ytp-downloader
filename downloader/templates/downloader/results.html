@@ -1,25 +1,55 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Download Results</title>
+    <title>Video Download Links</title>
     <link rel="stylesheet" type="text/css" href="{% static 'styles/styles.css' %}">
 </head>
 <body>
     <div class="container">
-        <h1>Download Results</h1>
-        <div class="results">
-            <ul>
+        <h1>Video Download Links</h1>
+        <table class="video-table">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Thumbnail</th>
+                    <th>Quality</th>
+                    <th>Download</th>
+                </tr>
+            </thead>
+            <tbody>
                 {% for video in videos %}
-                    <li>
-                        <h2>{{ video.title }}</h2>
-                        <a href="{{ video.url }}">Watch Video</a>
-                        <br>
-                        <img src="{{ video.thumbnail }}" alt="{{ video.title }}">
-                    </li>
+                    <tr>
+                        <td>{{ video.title }}</td>
+                        <td><img src="{{ video.thumbnail }}" alt="{{ video.title }}"></td>
+                        <td>
+                            <select id="quality-{{ forloop.counter }}" name="quality">
+                                {% for format in video.formats %}
+                                    <option value="{{ format.url }}">{{ format.height }}p - {{ format.filesize }}</option>
+                                {% endfor %}
+                            </select>
+                        </td>
+                        <td><a href="#" id="download-{{ forloop.counter }}" download>Download Selected Quality</a></td>
+                    </tr>
                 {% endfor %}
-            </ul>
-        </div>
-        <a href="{% url 'download_playlist' %}">Back</a>
+            </tbody>
+        </table>
+        <textarea rows="10" cols="100%">
+            {% for video in videos %}
+                {{ video.title }}: {{ video.highest_quality_link }}
+            {% endfor %}
+        </textarea><br>
+        <a href="{% url 'get_download_links' %}">Back</a>
     </div>
+
+    <script>
+        // JavaScript to handle the download link change based on selected quality
+        document.querySelectorAll('select[name="quality"]').forEach(function(select) {
+            select.addEventListener('change', function() {
+                const downloadLink = select.closest('tr').querySelector('a[download]');
+                downloadLink.href = select.value;
+            });
+        });
+    </script>
 </body>
 </html>

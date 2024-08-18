@@ -2,4 +2,4 @@
 from django import forms
 
 class PlaylistForm(forms.Form):
-    url = forms.URLField(label='YouTube Playlist URL', widget=forms.TextInput(attrs={'size': 80}))
+    url = forms.URLField(label='YouTube URL', widget=forms.TextInput(attrs={'size': 80}))

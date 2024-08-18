@@ -1,0 +1,18 @@
+<!-- templates/downloader/playlist.html -->
+<h1>Get YouTube Playlist Download Links</h1>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Get Links</button>
+</form>
+
+{% if download_links %}
+    <h2>Download Links</h2>
+    <ul>
+        {% for link in download_links %}
+            <li>
+                <a href="{{ link.url }}" download>{{ link.title }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endif %}
